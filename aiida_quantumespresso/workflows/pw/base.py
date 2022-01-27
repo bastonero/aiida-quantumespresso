@@ -616,8 +616,6 @@ class PwBaseWorkChain(ProtocolMixin, BaseRestartWorkChain):
         In this case, as the BFGS history did not work, we restart with lowered trust_radius_min.
         If the latter is lower than 1.0e-6, then we set the ion_dynamics (and cell_dynamics) to 'damp'.
         """
-        self.ctx.restart_calc = None
-
         trust_radius_min = self.ctx.inputs.parameters.setdefault('IONS', {}).setdefault('trust_radius_min', 1.0e-3)
         if trust_radius_min >= 1.0e-6:
             new_trust_radius_min = trust_radius_min/10.0
@@ -625,11 +623,12 @@ class PwBaseWorkChain(ProtocolMixin, BaseRestartWorkChain):
             action = f'bfgs history failure: restarting with trust_radius_min={new_trust_radius_min}.'
         else:
             self.ctx.inputs.parameters.setdefault('IONS', {})['ion_dynamics'] = 'damp'
-            action = f'bfgs history failure and trust_radius_min<1.0e-6: restarting with damp dynamics.'
+            action = f'bfgs history failure and minimum trust radius exceeded (1e-6): restarting with damp dynamics.'
             if self.ctx.inputs.parameters['CONTROL']['calculation'] == 'vc-relax':
                 self.ctx.inputs.parameters.setdefault('CELL', {})['cell_dynamics'] = 'damp-w'     
         
         self.ctx.inputs.structure = calculation.outputs.output_structure
+        self.set_restart_type(RestartType.FROM_FULL)
         
         self.report_error_handled(calculation, action)
         return ProcessHandlerReport(True)
