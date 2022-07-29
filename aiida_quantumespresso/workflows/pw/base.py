@@ -619,6 +619,7 @@ class PwBaseWorkChain(ProtocolMixin, BaseRestartWorkChain):
         trust_radius_min = self.ctx.inputs.parameters.setdefault('IONS', {}).setdefault('trust_radius_min', 1.0e-3)
         if trust_radius_min >= 1.0e-6:
             new_trust_radius_min = trust_radius_min/10.0
+            self.ctx.inputs.parameters.setdefault('IONS', {})['trust_radius_ini'] = trust_radius_min
             self.ctx.inputs.parameters.setdefault('IONS', {})['trust_radius_min'] = new_trust_radius_min
             action = f'bfgs history failure: restarting with trust_radius_min={new_trust_radius_min}.'
         else:
@@ -628,7 +629,7 @@ class PwBaseWorkChain(ProtocolMixin, BaseRestartWorkChain):
                 self.ctx.inputs.parameters.setdefault('CELL', {})['cell_dynamics'] = 'damp-w'     
         
         self.ctx.inputs.structure = calculation.outputs.output_structure
-        self.set_restart_type(RestartType.FROM_FULL)
+        self.set_restart_type(RestartType.FULL, calculation.outputs.remote_folder)
         
         self.report_error_handled(calculation, action)
         return ProcessHandlerReport(True)
