@@ -104,14 +104,9 @@ def test_handle_convergence_not_reached(generate_workchain_ph):
     assert result.do_break
     assert process.ctx.inputs.parameters['INPUTPH']['nmix_ph'] == 8
 
-    result = process.handle_convergence_not_reached(process.ctx.children[-1])
-    assert isinstance(result, ProcessHandlerReport)
-    assert result.do_break
-    assert process.ctx.inputs.parameters['INPUTPH']['nmix_ph'] == 20
-
     alpha_new = PhBaseWorkChain.defaults.alpha_mix * PhBaseWorkChain.defaults.delta_factor_alpha_mix
 
-    for _ in range(4):
+    for _ in range(2):  # this is dependent on PhBaseWorkChain.defaults.delta_factor_alpha_mix
         result = process.handle_convergence_not_reached(process.ctx.children[-1])
         assert isinstance(result, ProcessHandlerReport)
         assert result.do_break

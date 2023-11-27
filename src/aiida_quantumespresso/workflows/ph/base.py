@@ -22,9 +22,9 @@ class PhBaseWorkChain(ProtocolMixin, BaseRestartWorkChain):
 
     defaults = AttributeDict({
         'delta_factor_max_seconds': 0.95,
-        'delta_factor_alpha_mix': 0.65,
+        'delta_factor_alpha_mix': 0.5,
         'nmix_ph': 4,
-        'alpha_mix': 0.7,
+        'alpha_mix': 0.4,
     })
 
     @classmethod
@@ -263,15 +263,9 @@ class PhBaseWorkChain(ProtocolMixin, BaseRestartWorkChain):
 
         nmix_ph = self.ctx.inputs.parameters.get('INPUTPH', {}).get('nmix_ph', self.defaults.nmix_ph)
 
-        if nmix_ph < 20:  # in all these cases, better trying to use more iterations in the mixing first
-            if nmix_ph < 8:  # 8~20 is the recommended range on the Quantum ESPRESSO documentation
-                nmix_ph_new = 8
-            if nmix_ph >= 8:
-                nmix_ph_new = 20
-
-            self.ctx.inputs.parameters.setdefault('INPUTPH', {})['nmix_ph'] = nmix_ph_new
-
-            action = f'increased number of mixing iteration from {nmix_ph} to {nmix_ph_new} and restarting'
+        if nmix_ph < 8:  # 8~20 is the recommended range on the Quantum ESPRESSO documentation
+            self.ctx.inputs.parameters.setdefault('INPUTPH', {})['nmix_ph'] = 8
+            action = f'increased number of mixing iteration from {nmix_ph} to 8 and restarting'
             self.report_error_handled(node, action)
 
             return ProcessHandlerReport(True)
