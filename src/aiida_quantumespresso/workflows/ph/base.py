@@ -25,7 +25,7 @@ class PhBaseWorkChain(ProtocolMixin, BaseRestartWorkChain):
         'delta_factor_max_seconds': 0.95,
         'delta_factor_alpha_mix': 0.5,
         'nmix_ph': 4,
-        'alpha_mix': 0.4,
+        'alpha_mix': 0.7,
     })
 
     @classmethod
