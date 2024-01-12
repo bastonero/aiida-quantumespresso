@@ -28,7 +28,7 @@ dependencies = [
     'importlib_resources',
     'jsonschema',
     'numpy',
-    'pydantic~=1.10,>=1.10.8',
+    'pydantic~=2.0',
     'packaging',
     'qe-tools~=2.0',
     'xmlschema~=2.0'
@@ -197,6 +197,7 @@ testpaths = [
     'tests',
 ]
 filterwarnings = [
+    'ignore:Object of type .* not in session, .* operation along .* will not proceed:sqlalchemy.exc.SAWarning',
     'ignore:Creating AiiDA configuration folder.*:UserWarning',
     'ignore::DeprecationWarning:frozendict:',
     'ignore::DeprecationWarning:pkg_resources:',
