@@ -600,11 +600,11 @@ def parse_step_to_trajectory(trajectory, data, skip_structure=False):
                 trajectory[key_alt].append(total_energy[key] * CONSTANTS.hartree_to_ev)
 
     if 'forces' in data and '$' in data['forces']:
-        forces = np.array(data['forces']['$'])
+        forces = np.array(data['forces']['$']) * CONSTANTS.hartree_to_ev / CONSTANTS.bohr_to_ang
         dimensions = data['forces']['@dims']  # Like [3, 2], should be reversed to reshape the forces array
         trajectory['forces'].append(forces.reshape(dimensions[::-1]))
 
     if 'stress' in data and '$' in data['stress']:
-        stress = np.array(data['stress']['$'])
+        stress = np.array(data['stress']['$']) * 2 * CONSTANTS.ry_si  / CONSTANTS.bohr_si**3 / 1.0e+9
         dimensions = data['stress']['@dims']  # Like [3, 3], should be reversed to reshape the stress array
         trajectory['stress'].append(stress.reshape(dimensions[::-1]))
