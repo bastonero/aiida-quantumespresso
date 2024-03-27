@@ -3,6 +3,9 @@
 from aiida.engine import calcfunction
 from aiida.orm import Data
 
+from aiida_quantumespresso.data.hubbard_structure import HubbardStructureData
+from aiida_quantumespresso.utils.hubbard import HubbardUtils
+
 
 @calcfunction
 def seekpath_structure_analysis(structure, **kwargs):
@@ -28,4 +31,14 @@ def seekpath_structure_analysis(structure, **kwargs):
     # All keyword arugments should be `Data` node instances of base type and so should have the `.value` attribute
     unwrapped_kwargs = {key: node.value for key, node in kwargs.items() if isinstance(node, Data)}
 
-    return get_explicit_kpoints_path(structure, **unwrapped_kwargs)
+    result = get_explicit_kpoints_path(structure, **unwrapped_kwargs)
+
+    if not isinstance(structure, HubbardStructureData):
+        return result
+
+    primitive = result['primitive_structure']
+    hutils = HubbardUtils(structure)
+    primitive_hubbard = hutils.get_hubbard_for_supercell(primitive)
+
+    result['primitive_structure'] = primitive_hubbard
+    return result
