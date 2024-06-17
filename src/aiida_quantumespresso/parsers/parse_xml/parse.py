@@ -99,7 +99,7 @@ def parse_xml_post_6_2(xml):
         [x * CONSTANTS.bohr_to_ang for x in outputs['atomic_structure']['cell']['a3']],
     ]
 
-    has_electric_field = inputs.get('electric_field', {}).get('electric_potential', None) == 'sawtooth_potential'
+    has_electric_field = 'electric_field' in outputs
     has_dipole_correction = inputs.get('electric_field', {}).get('dipole_correction', False)
 
     if 'occupations' in inputs.get('bands', {}):
@@ -608,3 +608,9 @@ def parse_step_to_trajectory(trajectory, data, skip_structure=False):
         stress = np.array(data['stress']['$']) * 2 * CONSTANTS.ry_si  / CONSTANTS.bohr_si**3 / 1.0e+9
         dimensions = data['stress']['@dims']  # Like [3, 3], should be reversed to reshape the stress array
         trajectory['stress'].append(stress.reshape(dimensions[::-1]))
+
+    if 'electric_field' in data and 'finiteElectricFieldInfo' in data['electric_field']:
+        electronic_dipole = np.array(data['electric_field']['finiteElectricFieldInfo']['electronicDipole'])
+        ionic_dipole = np.array(data['electric_field']['finiteElectricFieldInfo']['ionicDipole'])
+        trajectory['electronic_dipole_cartesian_axes'].append(electronic_dipole)
+        trajectory['ionic_dipole_cartesian_axes'].append(ionic_dipole)

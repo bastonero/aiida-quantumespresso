@@ -4,7 +4,7 @@ from aiida.engine import calcfunction
 from aiida.orm import Data
 
 from aiida_quantumespresso.data.hubbard_structure import HubbardStructureData
-from aiida_quantumespresso.utils.hubbard import HubbardUtils
+from aiida_quantumespresso.utils.hubbard import is_intersite_hubbard
 
 
 @calcfunction
@@ -27,6 +27,7 @@ def seekpath_structure_analysis(structure, **kwargs):
     Note that exact parameters that are available and their defaults will depend on your Seekpath version.
     """
     from aiida.tools import get_explicit_kpoints_path
+    import numpy as np
 
     # All keyword arugments should be `Data` node instances of base type and so should have the `.value` attribute
     unwrapped_kwargs = {key: node.value for key, node in kwargs.items() if isinstance(node, Data)}
@@ -36,9 +37,35 @@ def seekpath_structure_analysis(structure, **kwargs):
     if not isinstance(structure, HubbardStructureData):
         return result
 
-    primitive = result['primitive_structure']
-    hutils = HubbardUtils(structure)
-    primitive_hubbard = hutils.get_hubbard_for_supercell(primitive)
+    if is_intersite_hubbard(structure.hubbard):
+        ucell = structure.cell
+        pcell = result['primitive_structure'].cell
+        matrix = np.dot(np.linalg.inv(pcell), ucell)
 
-    result['primitive_structure'] = primitive_hubbard
+        kpoints_data = result['explicit_kpoints'].clone()
+        kpoints = np.dot(kpoints_data.get_kpoints(), matrix)
+        kpoints_data.set_kpoints(kpoints)
+
+        result['explicit_kpoints'] = kpoints_data
+        result['primitive_structure'] = structure.clone()
+        return result
+
+    result['primitive_structure'] = update_structure_with_hubbard(result['primitive_structure'], structure)
+    result['conv_structure'] = update_structure_with_hubbard(result['conv_structure'], structure)
     return result
+
+
+def update_structure_with_hubbard(structure, orig_structure):
+    """Update the structure based on Hubbard parameters if the input structure is a HubbardStructureData."""
+    hubbard_structure = HubbardStructureData.from_structure(structure)
+
+    for parameter in orig_structure.hubbard.parameters:
+        hubbard_structure.initialize_onsites_hubbard(
+            atom_name=orig_structure.sites[parameter.atom_index].kind_name,
+            atom_manifold=parameter.atom_manifold,
+            value=parameter.value,
+            hubbard_type=parameter.hubbard_type,
+            use_kinds=True,
+        )
+
+    return hubbard_structure
