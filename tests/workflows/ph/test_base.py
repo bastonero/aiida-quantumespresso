@@ -10,6 +10,11 @@ from aiida_quantumespresso.calculations.ph import PhCalculation
 from aiida_quantumespresso.workflows.ph.base import PhBaseWorkChain
 
 
+def generate_inputs():
+    """Return only those inputs that the parser will expect to be there."""
+    return {'parameters': orm.Dict({'INPUTPH': {}})}
+
+
 @pytest.mark.usefixtures('aiida_profile')
 def test_invalid_inputs(generate_workchain_ph, generate_inputs_ph):
     """Test `PhBaseWorkChain` validation methods."""
@@ -197,9 +202,10 @@ def test_merge_outputs(
 
     entry_point_calc_job = 'quantumespresso.ph'
     parser = generate_parser('quantumespresso.ph')
+    inputs = generate_inputs()
 
     node_1 = generate_calc_job_node(
-        entry_point_name=entry_point_calc_job, computer=fixture_localhost, test_name=f'{name}_1'
+        entry_point_name=entry_point_calc_job, computer=fixture_localhost, test_name=f'{name}_1', inputs=inputs
     )
     results_1, calcjob_1 = parser.parse_from_node(node_1, store_provenance=False)
 
@@ -212,7 +218,7 @@ def test_merge_outputs(
     assert calcjob_1.exit_status == PhCalculation.exit_codes.ERROR_OUT_OF_WALLTIME.status
 
     node_2 = generate_calc_job_node(
-        entry_point_name=entry_point_calc_job, computer=fixture_localhost, test_name=f'{name}_2'
+        entry_point_name=entry_point_calc_job, computer=fixture_localhost, test_name=f'{name}_2', inputs=inputs
     )
     results_2, calcjob_2 = parser.parse_from_node(node_2, store_provenance=False)
 
