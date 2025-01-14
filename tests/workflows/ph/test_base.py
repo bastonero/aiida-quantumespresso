@@ -10,6 +10,11 @@ from aiida_quantumespresso.calculations.ph import PhCalculation
 from aiida_quantumespresso.workflows.ph.base import PhBaseWorkChain
 
 
+def generate_inputs():
+    """Return only those inputs that the parser will expect to be there."""
+    return {'parameters': orm.Dict({'INPUTPH': {}})}
+
+
 @pytest.fixture
 def generate_ph_calc_job_node(generate_calc_job_node, fixture_localhost):
     """Generate a ``CalcJobNode`` that would have been created by a ``PhCalculation``."""
