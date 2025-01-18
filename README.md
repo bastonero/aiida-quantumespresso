@@ -12,10 +12,9 @@ The matrix below assumes the user always install the latest patch release of the
 
 | Plugin | AiiDA | Python | Quantum ESPRESSO |
 |-|-|-|-|
-| `v4.8 < v5.0` | ![Compatibility for v4.0][AiiDA v4.0-pydantic2] |  [![PyPI pyversions][Python v3.9-v3.12]](https://pypi.org/project/aiida-quantumespresso/4.8.0/) | ![Quantum ESPRESSO compatibility][QE v6.6-7.4] |
-| `v4.5 < v4.8` | ![Compatibility for v4.0][AiiDA v4.0-pydantic2] |  [![PyPI pyversions][Python v3.8-v3.11]](https://pypi.org/project/aiida-quantumespresso/4.5.0/) | ![Quantum ESPRESSO compatibility][QE v6.6-7.3] |
-| `v4.3 < v4.5` | ![Compatibility for v4.0][AiiDA v4.0] |  [![PyPI pyversions][Python v3.8-v3.11]](https://pypi.org/project/aiida-quantumespresso/4.3.0/) | ![Quantum ESPRESSO compatibility][QE v6.6-7.3] |
-| `v4.0 < v4.3` | ![Compatibility for v4.0][AiiDA v4.0] |  [![PyPI pyversions][Python v3.8-v3.11]](https://pypi.org/project/aiida-quantumespresso/4.0.0/) | ![Quantum ESPRESSO compatibility][QE v6.6-7.1] |
+| `v4.8 < v5.0` | ![Compatibility for v4.0][AiiDA v4.0] |  [![PyPI pyversions](https://img.shields.io/pypi/pyversions/aiida-quantumespresso.svg)](https://pypi.org/project/aiida-quantumespresso) | ![Quantum ESPRESSO compatibility][QE v6.6-7.4] |
+| `v4.3 < v4.8` | ![Compatibility for v4.0][AiiDA v4.0] |  [![PyPI pyversions](https://img.shields.io/pypi/pyversions/aiida-quantumespresso.svg)](https://pypi.org/project/aiida-quantumespresso) | ![Quantum ESPRESSO compatibility][QE v6.6-7.3] |
+| `v4.0 < v4.3` | ![Compatibility for v4.0][AiiDA v4.0] |  [![PyPI pyversions](https://img.shields.io/pypi/pyversions/aiida-quantumespresso.svg)](https://pypi.org/project/aiida-quantumespresso) | ![Quantum ESPRESSO compatibility][QE v6.6-7.1] |
 | `v3.5 < v4.0` | ![Compatibility for v3.5][AiiDA v3.5] |  [![PyPI pyversions][Python v3.6-v3.9]](https://pypi.org/project/aiida-quantumespresso/3.5.2/) | ![Quantum ESPRESSO compatibility][QE v6-7] |
 | `v3.4 < v3.5` | ![Compatibility for v3.4][AiiDA v3.4] |  [![PyPI pyversions][Python v3.6-v3.9]](https://pypi.org/project/aiida-quantumespresso/3.4.2/) | ![Quantum ESPRESSO compatibility][QE v6] |
 | `v3.3 < v3.4` | ![Compatibility for v3.3][AiiDA v3.3] |  [![PyPI pyversions][Python v3.6-v3.8]](https://pypi.org/project/aiida-quantumespresso/3.3.1/) | ![Quantum ESPRESSO compatibility][QE v6] |
