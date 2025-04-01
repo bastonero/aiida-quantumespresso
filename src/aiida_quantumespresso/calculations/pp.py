@@ -217,9 +217,10 @@ class PpCalculation(CalcJob):
         # files may be written. In that case, the data files will have `filplot` as a prefix with some suffix to
         # distinguish them from one another. The `fileout` filename will be the full data filename with the `fileout`
         # value as a suffix.
-        retrieve_tuples = [self._FILEOUT, (f'{self._FILPLOT}_*{self._FILEOUT}', '.', 0)]
-
-        if self.inputs.metadata.options.keep_plot_file:
+        retrieve_tuples = [self._FILEOUT, (f'{self._FILPLOT}*{self._FILEOUT}', '.', 0)]
+        if 'keep_plot_file' in self.inputs.metadata.options:
+            self.inputs.metadata.options.keep_data_files = self.inputs.metadata.options.keep_plot_file
+        if self.inputs.metadata.options.keep_data_files:
             calcinfo.retrieve_list.extend(retrieve_tuples)
         else:
             calcinfo.retrieve_temporary_list.extend(retrieve_tuples)
