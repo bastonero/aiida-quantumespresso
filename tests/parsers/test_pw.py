@@ -76,7 +76,7 @@ def test_pw_default_no_xml(
     results, calcfunction = parser.parse_from_node(node, store_provenance=False)
 
     assert calcfunction.is_failed, calcfunction.process_state
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_XML_MISSING.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_XML_MISSING.status  # pylint: disable=no-member
 
     # By setting the `without_xml` option the parsing should succeed and simply only use the stdout content
     inputs = generate_inputs(calculation_type='relax', metadata={'options': {'without_xml': True}})
@@ -98,17 +98,7 @@ def test_pw_default_no_xml(
 
 
 @pytest.mark.parametrize(
-    'xml_format', [
-        '190304',
-        '191206',
-        '200420',
-        '210716',
-        '211101',
-        '220603',
-        '230310',
-        '240411',
-        '241015',
-    ]
+    'xml_format', ['190304', '191206', '200420', '210716', '211101', '220603', '230310', '240411', '241015', '241104']
 )
 def test_pw_default_xml(
     fixture_localhost, generate_calc_job_node, generate_parser, generate_inputs, data_regression, xml_format
@@ -197,7 +187,7 @@ def test_pw_failed_base_exception(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_UNEXPECTED_PARSER_EXCEPTION.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_UNEXPECTED_PARSER_EXCEPTION.status  # pylint: disable=no-member
     assert exception in calcfunction.exit_message
 
 
@@ -220,7 +210,7 @@ def test_pw_failed_computing_cholesky(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_COMPUTING_CHOLESKY.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_COMPUTING_CHOLESKY.status  # pylint: disable=no-member
 
 
 @pytest.mark.parametrize('filename', ('', '_stdout'))
@@ -242,7 +232,7 @@ def test_failed_too_many_bands_not_converged(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    desired_exit_status = node.process_class.exit_codes.ERROR_DIAGONALIZATION_TOO_MANY_BANDS_NOT_CONVERGED.status
+    desired_exit_status = node.process_class.exit_codes.ERROR_DIAGONALIZATION_TOO_MANY_BANDS_NOT_CONVERGED.status  # pylint: disable=no-member
     assert calcfunction.exit_status == desired_exit_status
 
 
@@ -263,7 +253,7 @@ def test_pw_failed_dexx_negative(fixture_localhost, generate_calc_job_node, gene
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_DEXX_IS_NEGATIVE.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_DEXX_IS_NEGATIVE.status  # pylint: disable=no-member
 
 
 @pytest.mark.parametrize('filename', ('', '_stdout'))
@@ -285,7 +275,7 @@ def test_failed_s_matrix_not_positive_definite(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_S_MATRIX_NOT_POSITIVE_DEFINITE.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_S_MATRIX_NOT_POSITIVE_DEFINITE.status  # pylint: disable=no-member
 
 
 @pytest.mark.parametrize('filename', ('', '_stdout'))
@@ -305,7 +295,7 @@ def test_failed_zhegvd(fixture_localhost, generate_calc_job_node, generate_parse
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_ZHEGVD_FAILED.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_ZHEGVD_FAILED.status  # pylint: disable=no-member
 
 
 @pytest.mark.parametrize('filename', ('', '_stdout'))
@@ -325,7 +315,7 @@ def test_failed_qr(fixture_localhost, generate_calc_job_node, generate_parser, g
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_QR_FAILED.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_QR_FAILED.status  # pylint: disable=no-member
 
 
 @pytest.mark.parametrize('filename', ('', '_stdout'))
@@ -347,7 +337,7 @@ def test_failed_eigenvectors_convergence(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_EIGENVECTOR_CONVERGENCE.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_EIGENVECTOR_CONVERGENCE.status  # pylint: disable=no-member
 
 
 @pytest.mark.parametrize('filename', ('', '_stdout'))
@@ -369,7 +359,7 @@ def test_failed_broyden_factorization(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_BROYDEN_FACTORIZATION.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_BROYDEN_FACTORIZATION.status  # pylint: disable=no-member
 
 
 @pytest.mark.parametrize('filename', ('', '_stdout'))
@@ -389,7 +379,7 @@ def test_failed_g_par(fixture_localhost, generate_calc_job_node, generate_parser
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_G_PAR.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_G_PAR.status  # pylint: disable=no-member
 
 
 def test_pw_failed_missing(fixture_localhost, generate_calc_job_node, generate_parser, generate_inputs):
@@ -410,7 +400,7 @@ def test_pw_failed_missing(fixture_localhost, generate_calc_job_node, generate_p
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_FILES.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_FILES.status  # pylint: disable=no-member
     assert orm.Log.collection.get_logs_for(node)
 
 
@@ -437,7 +427,7 @@ def test_pw_failed_interrupted(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_FILES.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_FILES.status  # pylint: disable=no-member
     assert orm.Log.collection.get_logs_for(node)
     assert 'output_parameters' in results
     data_regression.check(results['output_parameters'].get_dict())
@@ -467,7 +457,7 @@ def test_pw_failed_interrupted_stdout(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_STDOUT_INCOMPLETE.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_STDOUT_INCOMPLETE.status  # pylint: disable=no-member
     assert orm.Log.collection.get_logs_for(node)
     assert 'output_band' in results
     assert 'output_parameters' in results
@@ -498,7 +488,7 @@ def test_pw_failed_interrupted_xml(
 
     assert calcfunction.is_finished, calcfunction.exception
     assert calcfunction.is_failed, calcfunction.exit_status
-    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_XML_PARSE.status
+    assert calcfunction.exit_status == node.process_class.exit_codes.ERROR_OUTPUT_XML_PARSE.status  # pylint: disable=no-member
     assert orm.Log.collection.get_logs_for(node)
     assert 'output_parameters' in results
     assert 'output_trajectory' in results
@@ -506,9 +496,10 @@ def test_pw_failed_interrupted_xml(
 
 
 @pytest.mark.parametrize(
-    'test_case, expected_exit_code', (
+    'test_case, expected_exit_code',
+    (
         ('default', None),
-        ('failed_interrupted', PwCalculation.exit_codes.ERROR_SCHEDULER_OUT_OF_WALLTIME),
+        ('failed_interrupted', PwCalculation.exit_codes.ERROR_SCHEDULER_OUT_OF_WALLTIME),  # pylint: disable=no-member
     )
 )
 def test_pw_failed_interrupted_scheduler(
@@ -527,7 +518,7 @@ def test_pw_failed_interrupted_scheduler(
 
     # Generate the node and set an exit status as if it would have been set by the scheduler parser
     node = generate_calc_job_node(entry_point_calc_job, fixture_localhost, test_case, generate_inputs())
-    node.set_exit_status(PwCalculation.exit_codes.ERROR_SCHEDULER_OUT_OF_WALLTIME.status)
+    node.set_exit_status(PwCalculation.exit_codes.ERROR_SCHEDULER_OUT_OF_WALLTIME.status)  # pylint: disable=no-member
 
     parser = generate_parser(entry_point_parser)
     _, calcfunction = parser.parse_from_node(node, store_provenance=False)
@@ -551,12 +542,12 @@ def test_pw_failed_interrupted_relax(fixture_localhost, generate_calc_job_node, 
 
     inputs = generate_inputs(calculation_type='relax')
     node = generate_calc_job_node(entry_point_calc_job, fixture_localhost, name, inputs)
-    node.set_exit_status(PwCalculation.exit_codes.ERROR_SCHEDULER_OUT_OF_WALLTIME.status)
+    node.set_exit_status(PwCalculation.exit_codes.ERROR_SCHEDULER_OUT_OF_WALLTIME.status)  # pylint: disable=no-member
     parser = generate_parser(entry_point_parser)
     results, calcfunction = parser.parse_from_node(node, store_provenance=False)
 
     assert calcfunction.is_failed
-    assert calcfunction.exit_status == PwCalculation.exit_codes.ERROR_IONIC_INTERRUPTED_PARTIAL_TRAJECTORY.status
+    assert calcfunction.exit_status == PwCalculation.exit_codes.ERROR_IONIC_INTERRUPTED_PARTIAL_TRAJECTORY.status  # pylint: disable=no-member
     assert orm.Log.collection.get_logs_for(node)
     assert 'output_parameters' in results
     assert 'output_structure' in results
